@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedStore.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list class="postList">
+    <div  ion-item *ngFor="let post of posts">
+    <ion-thumbnail item-left>
+        <img *ngIf="post.featured_image_src && post.featured_image_src.thumbnail" [src]="post.featured_image_src.thumbnail">
+    </ion-thumbnail>
+    <h2 [innerHTML]="post.title.rendered" (click)="postTapped($event, post)"></h2>
+    <p *ngIf="post._embedded && post._embedded['wp:term']" style="margin-top: 0.6em">
+        <span *ngFor="let termList of post._embedded['wp:term']">
+            <li *ngFor="let term of termList" [innerHTML]="term.name" (click)="storeTapped($event, term)">
+            </li>
+        </span>
+    </p>
+    </div>
+
+  </ion-list>
+
+
+  <button ion-button secondary menuToggle>Toggle Menu</button>
+</ion-content>

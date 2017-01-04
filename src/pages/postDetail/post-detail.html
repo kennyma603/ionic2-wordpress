@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{selectedPost.title.rendered}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+ <div *ngIf="selectedPost" class="selection">
+   <div style="height: 200px; text-align: center">
+    <img style="max-height: 100%" *ngIf="selectedPost.featured_image_src_full" [src]="selectedPost.featured_image_src_full" class="featured-image" />
+   </div>
+    <h2 [innerHTML]="selectedPost.title.rendered"></h2>
+    <div [innerHTML]="selectedPost.content.rendered"></div>
+    <div *ngIf="selectedPost.deal_details_code">
+      <p style="text-align: center">Click on Promo code below to copy to clipboard</p>
+      <button ion-button full>{{selectedPost.deal_details_code}}</button>
+    </div>
+
+    <div *ngIf="selectedPost.deal_details_type !== 'coupon_code'">
+      <button ion-button full>Get the deal now!</button>
+    </div>
+
+    <div style="margin-top: 20px">Expire: {{selectedPost.deal_details_expirydate}}</div>
+ </div>
+</ion-content>
