@@ -31,4 +31,10 @@ export class WpService {
         return this.http.get(this.wpApiURL + '/deal?_embed&' + params)
             .map(res => res.json());
     }
+
+    getCommentsByPostId(paramsObj) {
+        let params = this.util.transformRequest(paramsObj);
+        return this.http.get(this.wpApiURL + '/comments?' + params)
+            .map(res => res.json());
+    }
 }

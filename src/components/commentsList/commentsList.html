@@ -1,0 +1,16 @@
+<ion-card *ngFor="let comment of comments">
+
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="{{comment.author_avatar_urls[96]}}">
+    </ion-avatar>
+    <h2>{{comment.author_name}}</h2>
+    <p>{{comment.date}}</p>
+  </ion-item>
+
+
+  <ion-card-content>
+    {{comment.content.rendered}}
+  </ion-card-content>
+
+</ion-card>
