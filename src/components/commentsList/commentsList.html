@@ -1,16 +1,19 @@
-<ion-card *ngFor="let comment of comments">
+<h3 style="margin-top: 2em;">Comments</h3>
+<div *ngIf="comments.length > 0">
+    <ion-card *ngFor="let comment of comments">
+    <ion-item>
+        <ion-avatar item-left>
+        <img src="{{comment.author_avatar_urls[96]}}">
+        </ion-avatar>
+        <h2>{{comment.author_name}}</h2>
+        <p>{{comment.date | date:"dd/MM/yyyy"}}</p>
+    </ion-item>
 
-  <ion-item>
-    <ion-avatar item-left>
-      <img src="{{comment.author_avatar_urls[96]}}">
-    </ion-avatar>
-    <h2>{{comment.author_name}}</h2>
-    <p>{{comment.date}}</p>
-  </ion-item>
+    <ion-card-content [innerHTML]="comment.content.rendered">
+    </ion-card-content>
+    </ion-card>
+</div>
 
-
-  <ion-card-content>
-    {{comment.content.rendered}}
-  </ion-card-content>
-
-</ion-card>
+<div *ngIf="comments.length === 0">
+    No comment yet.
+</div>
