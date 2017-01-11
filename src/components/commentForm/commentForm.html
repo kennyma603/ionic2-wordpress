@@ -1,0 +1,24 @@
+<h3>Add your comment about this deal:</h3>
+<form name="commentForm" #commentForm="ngForm" novalidate>
+      <ion-list>
+        <ion-item>
+          <ion-label floating>enter your comment...</ion-label>
+          <ion-textarea
+            [(ngModel)]="model.content"
+            #commentText="ngModel"
+            name="commentText"
+            type="text"
+            rows="3"
+            required
+          >
+          </ion-textarea>
+        </ion-item>
+      </ion-list>
+      <button ion-button block (click)="submitComment()" [disabled]="!commentForm.valid">Add</button>
+
+      <div *ngIf="!commentText.valid && (commentText.dirty || commentText.touched)" class="alert alert-danger padding">comment is required</div>
+
+      <div class="padding">{{statusMessage}}</div>
+
+
+        </form>

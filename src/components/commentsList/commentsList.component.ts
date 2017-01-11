@@ -12,6 +12,7 @@ export class CommentsListComponent {
     @Input() postId: number;
     wpApiURL: string = SITE_URL + '/wp-json/wp/v2';
     comments: any = [];
+    authorId = null;
 
     constructor(private http: Http, private wp: WpService) {
     }
