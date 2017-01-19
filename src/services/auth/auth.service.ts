@@ -51,11 +51,13 @@ export class AuthService {
             return Observable.throw(false)});
     }
 
-    logout(): void {
+    public logout(): void {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('id_token');
         localStorage.removeItem('currentUser');
     }
+
+
 
 }

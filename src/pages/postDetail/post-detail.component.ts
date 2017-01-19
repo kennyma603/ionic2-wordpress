@@ -8,8 +8,21 @@ import {NavController, NavParams} from 'ionic-angular';
 export class PostDetail {
     selectedPost : any; 
 
+    comment: any = {
+        content: '',
+        author: null,
+        post: null
+    }
+
     constructor(private nav: NavController, navParams: NavParams) {
         this.selectedPost = navParams.get('post');
+    }
+
+    editCommentChanged(selecteComment) {
+        console.log(selecteComment);
+        debugger;
+        this.comment.content = selecteComment.content.rendered;
+        
     }
 
 } 

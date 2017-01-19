@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { Http } from '@angular/http';
 import { SITE_URL, WpService } from '../../services/index';
 
@@ -10,6 +10,7 @@ import { SITE_URL, WpService } from '../../services/index';
 export class CommentsListComponent {
 
     @Input() postId: number;
+    @Output() editCommentChanged = new EventEmitter();
     wpApiURL: string = SITE_URL + '/wp-json/wp/v2';
     comments: any = [];
     authorId = null;
@@ -30,6 +31,27 @@ export class CommentsListComponent {
             },
             error => {}            
         );
+    }
+
+    canDeleteComment(authorId) {
+        //console.log(authorId, this.wp.getCurrentAuthorId(), authorId === this.wp.getCurrentAuthorId());
+        return authorId === this.wp.getCurrentAuthorId();
+    }
+
+    deleteComment(commentId) {
+        console.log(commentId);
+        this.wp.deleteComment(commentId).subscribe(
+            data => {
+                console.log(data);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+    }
+
+    editComment(comment) {
+        this.editCommentChanged.emit(comment);
     }
 
 

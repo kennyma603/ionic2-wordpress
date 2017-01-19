@@ -1,6 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { JwtHelper } from 'angular2-jwt';
-import { WpService } from '../../services/index';
+import { NavController } from 'ionic-angular';
+import { WpService, AuthService } from '../../services/index';
+import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
     selector: 'comment-form',
@@ -9,45 +11,45 @@ import { WpService } from '../../services/index';
 
 export class CommentFormComponent {
     @Input() postId: number;
+    @Input() comment: any;
     jwtHelper: JwtHelper = new JwtHelper();
     statusMessage = '';
 
     editing: false;
-    model: any = {
-        content: '',
-        author: null,
-        post: null
-    }
 
-    constructor(private wp:WpService) {
-        
+
+    constructor(private wp:WpService, private auth: AuthService, private nav:
+            NavController) {
     }
 
     ngOnInit() {
-        this.model.post = this.postId;
-        let token = localStorage.getItem('id_token');
-        //debugger;
-        if(token) {
-            let myToken = this.jwtHelper.decodeToken(token);
-            this.model.author = Number(myToken.data.user.id);
-        }
+        this.comment.post = this.postId;
+        this.comment.author = this.wp.getCurrentAuthorId();
+
+        
     }
 
-    submitComment() {
-        console.log(this.model);
-        this.wp.userAddComment(this.model)
+    submitComment(form) {
+        console.log(this.comment, form);
+        this.comment.author = this.wp.getCurrentAuthorId();
+        this.wp.userAddComment(this.comment)
                 .subscribe(
                     data => {
                         console.log(data);
                         this.statusMessage = "Comment added successfully!";
 
                         //clear form
-                        this.model = {content: ''}
+                        form.reset();
                     },
                     error => {
                         console.log(error._body);
                         this.statusMessage = error._body;
                     }
         );
+    }
+
+    commentFormNotAuthClicked() {
+        console.log('not auth');
+        this.nav.push(ProfilePage);
     }
 }

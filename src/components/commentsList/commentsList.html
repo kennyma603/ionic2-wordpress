@@ -10,8 +10,25 @@
     </ion-item>
 
     <ion-card-content [innerHTML]="comment.content.rendered">
+
+
+
     </ion-card-content>
+
+  <ion-row>
+    <ion-col right text-right *ngIf="canDeleteComment(comment.author)">
+      <ion-note>
+        <span (click)="editComment(comment)"><a>Edit</a></span> | 
+        <span (click)="deleteComment(comment.id)"><a>Delete</a></span>
+      </ion-note>
+    </ion-col>
+  </ion-row>
+
+
+    
     </ion-card>
+
+
 </div>
 
 <div *ngIf="comments.length === 0">

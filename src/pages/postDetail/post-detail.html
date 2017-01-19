@@ -26,9 +26,21 @@
     <div style="margin-top: 20px">Expire: {{selectedPost.deal_details_expirydate}}</div>
  
  
- <comments-list [postId]="selectedPost.id"></comments-list>
+ <comments-list [postId]="selectedPost.id" (editCommentChanged)="editCommentChanged($event)"></comments-list>
 
- <comment-form [postId]="selectedPost.id"></comment-form>
+ 
  
  </div>
+
 </ion-content>
+
+
+
+<ion-footer>
+<ion-toolbar position="bottom">
+
+<comment-form [postId]="selectedPost.id" [comment]="comment"></comment-form>
+
+</ion-toolbar>
+</ion-footer>
+
