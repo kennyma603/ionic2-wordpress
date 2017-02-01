@@ -4,7 +4,7 @@ import { NavController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { PostDetail } from '../postDetail/post-detail.component';
 import { StoresPosts } from '../storesPosts/stores-posts.component';
-import { UtilService, WpService } from '../../services/index';
+import { WpService } from '../../services/index';
 
 @Component({
     templateUrl: 'home.html'
@@ -13,28 +13,32 @@ import { UtilService, WpService } from '../../services/index';
 export class Home {
     posts: any;
     loader: any;
+    isLoading: boolean = false;
+    noMoreData: boolean = false;
     params = {
     };
 
     constructor(
         public navCtrl: NavController,
         private http: Http,
-        private nav:
-            NavController,
-        public up: UtilService,
+        private nav:NavController,
         private wp: WpService
     ) {
 
         this.params['page'] = 1;
-        //this.loader = this.up.getLoader("Loading Posts...");
-        // this.loader.present();
+        this.isLoading = true;
 
         this.wp.getPosts(this.params)
-            .subscribe(data => {
-                this.posts = data;
-                //this.loader.dismiss();
-                console.log(this.posts);
-            });
+            .subscribe(
+                data => {
+                    this.posts = data;
+                    this.isLoading = false;
+                },
+                error => {
+                    this.isLoading = false;
+                    console.log(error);
+                }    
+            );
     }
 
     ionViewDidEnter() {
@@ -54,17 +58,24 @@ export class Home {
         });
     }
 
-    nextPageClick() {
+    loadMore(infiniteScroll) {
         this.params['page'] = this.params['page'] + 1;
-        this.loader = this.up.getLoader("Loading Posts...");
-        this.loader.present();
+        console.log(this.params['page']);
 
         this.wp.getPosts(this.params)
-            .subscribe(data => {
-                this.posts = data;
-                this.loader.dismiss();
-                console.log(this.posts);
-            });
+            .subscribe(
+                data => {
+                    for(let i = 0; i< data.length; i++) {
+                        this.posts.push(data[i]);
+                    }
+                    
+                    infiniteScroll.complete();
+                }, 
+                error => {
+                    console.log(error);
+                    infiniteScroll.complete();
+                }
+            );
     }
 
 }

@@ -39,7 +39,7 @@
 <ion-footer>
 <ion-toolbar position="bottom">
 
-<comment-form [postId]="selectedPost.id" [comment]="comment"></comment-form>
+<comment-form [postId]="selectedPost.id" [(comment)]="comment" [(isEditMode)]="isEditMode"></comment-form>
 
 </ion-toolbar>
 </ion-footer>

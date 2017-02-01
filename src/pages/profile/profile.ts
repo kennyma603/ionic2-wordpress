@@ -6,10 +6,12 @@ import { AuthService, WpService } from '../../services/index';
     templateUrl: './profile.html',
 })
 export class ProfilePage {
+    userInfo: any = {};
 
     constructor(
         private auth: AuthService,
         private wp: WpService) {
+            console.log(this.auth.user);
     }
 
     getInfo() {

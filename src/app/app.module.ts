@@ -12,6 +12,7 @@ import { UtilService, AuthService, WpService } from '../services/index';
 import { LoginFormComponent } from '../components/loginForm/loginForm.component';
 import { CommentsListComponent } from '../components/commentsList/commentsList.component';
 import { CommentFormComponent } from '../components/commentForm/commentForm.component';
+import { SignupFormComponent } from '../components/signupForm/signupForm.component';
 
 export function getAuthHttp(http) {
   return new AuthHttp(new AuthConfig({
@@ -29,7 +30,8 @@ export function getAuthHttp(http) {
     ProfilePage,
     LoginFormComponent,
     CommentsListComponent,
-    CommentFormComponent
+    CommentFormComponent,
+    SignupFormComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)

@@ -1,9 +1,14 @@
-    <form name="loginForm" #loginForm="ngForm" novalidate>
+
+  <div class="padding">
+      become a member
+  </div>  
+    
+    <form name="signupForm" #signupForm="ngForm" novalidate>
       <ion-list>
         <ion-item>
           <ion-label floating>Username</ion-label>
           <ion-input
-            [(ngModel)]="loginModel.username"
+            [(ngModel)]="signupModel.username"
             #username="ngModel"
             name="username"
             type="text"
@@ -11,10 +16,23 @@
           >
           </ion-input>
         </ion-item>
+
+        <ion-item>
+          <ion-label floating>Email</ion-label>
+          <ion-input
+            [(ngModel)]="signupModel.email"
+            #email="ngModel"
+            name="email"
+            type="email"
+            required
+          >
+        </ion-input>
+        </ion-item>
+
         <ion-item>
           <ion-label floating>Password</ion-label>
           <ion-input
-            [(ngModel)]="loginModel.password"
+            [(ngModel)]="signupModel.password"
             #password="ngModel"
             name="password"
             type="password"
@@ -28,8 +46,8 @@
       <div *ngIf="!username.valid && (username.dirty || username.touched)" class="alert alert-danger padding">Username is required</div>
       <div *ngIf="!password.valid && (password.dirty || password.touched)" class="alert alert-danger padding">Password is required</div>
 
-      <div class="padding">{{loginStatusMessage}}</div>
-      <button ion-button block (click)="login()" [disabled]="!loginForm.valid || isLoading">Login</button>
+      <div class="padding">{{signupStatusMessage}}</div>
+      <button ion-button block (click)="signup()" [disabled]="!signupForm.valid || isLoading">Login</button>
 
 
     </form>

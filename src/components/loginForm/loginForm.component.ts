@@ -9,11 +9,13 @@ export class LoginFormComponent {
 
     loginStatusMessage: string;
     loginModel: any = {}
+    isLoading: boolean = false;
 
     constructor(private auth: AuthService) {
     }
 
     login(e) {
+        this.isLoading = true;
         this.loginStatusMessage = '';
         this.auth.login(this.loginModel.username, this.loginModel.password)
             .subscribe(
@@ -25,9 +27,11 @@ export class LoginFormComponent {
                         // login failed - token issue
                         this.loginStatusMessage = 'Something wrong with token.';
                     }
+                    this.isLoading = false;
                 },
                 result => {
                     //rest call error
+                    this.isLoading = false;
                     this.loginStatusMessage = 'Username or password is incorrect';
                 }
             );

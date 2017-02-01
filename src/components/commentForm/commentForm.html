@@ -1,9 +1,9 @@
-<form name="commentForm" #commentForm="ngForm" novalidate *ngIf="auth.authenticated()">
+<form name="commentForm" #commentForm="ngForm" novalidate *ngIf="showPanel()">
       <div *ngIf="!commentText.valid && (commentText.dirty || commentText.touched)" class="alert alert-danger padding">comment is required</div>
 
       <div class="padding">{{statusMessage}}</div>
           <ion-textarea
-            [(ngModel)]="comment.content"
+            [(ngModel)]="comment.content.rendered"
             #commentText="ngModel"
             name="commentText"
             type="text"
@@ -13,9 +13,16 @@
           >
           </ion-textarea>
 
-      <button ion-button block (click)="submitComment(commentForm)" [disabled]="!commentForm.valid">Add</button>
+<ion-grid>
+  <ion-row>
+    <ion-col *ngIf="!isEditMode"><button ion-button block (click)="submitComment(commentForm)" [disabled]="!commentForm.valid">Add</button></ion-col>
+    <ion-col *ngIf="isEditMode"><button ion-button block (click)="updateComment(commentForm)" [disabled]="!commentForm.valid">Update</button></ion-col>
+    <ion-col width-33><button ion-button block (click)="onCancel()">Cancel</button></ion-col>
+  </ion-row>
+</ion-grid>
+      
 </form>
 
-<form name="commentFormNotAuth" *ngIf="!auth.authenticated()">
-<button ion-button block (click)="commentFormNotAuthClicked()">Add Comment (login required)</button>
-</form>
+<p *ngIf="!showPanel() && auth.authenticated()" (click)="isEditing = true;" style="text-align: center;">Add Comment</p>
+
+<p *ngIf="!auth.authenticated()" (click)="commentFormNotAuthClicked()" style="text-align: center;">Add Comment (login required)</p>

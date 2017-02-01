@@ -8,13 +8,16 @@ import { SITE_URL, UtilService } from '../index';
 export class AuthService {
 
     public token: string;
+    public user: any;
     contentHeader: Headers = new Headers({ "Content-Type": "application/json" });
     jwtHelper: JwtHelper = new JwtHelper();
     wpApiURL: string = SITE_URL + '/wp-json/wp/v2';
     wpJWTURL: string = SITE_URL + '/wp-json/jwt-auth/v1';
 
     constructor(private http: Http, private util:UtilService) {
+        let userinfo = localStorage.getItem('current_user');
         this.token = localStorage.getItem('id_token');
+        this.user = userinfo ? JSON.parse(userinfo) : {};
     }
 
     public authenticated() {
@@ -34,12 +37,11 @@ export class AuthService {
                 if (token) {
                     // set token property
                     this.token = token;
-
                     localStorage.setItem('id_token', token);
 
                     // store username and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
+                    localStorage.setItem('current_user', JSON.stringify(response.json()));
+                    this.user = response.json();
                     // return true to indicate successful login
                     return true;
                 } else {
@@ -55,7 +57,7 @@ export class AuthService {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('id_token');
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('current_user');
     }
 
 

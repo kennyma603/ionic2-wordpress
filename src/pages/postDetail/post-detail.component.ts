@@ -6,10 +6,11 @@ import {NavController, NavParams} from 'ionic-angular';
 })
 
 export class PostDetail {
-    selectedPost : any; 
+    selectedPost : any;
+    isEditMode: boolean = false; 
 
     comment: any = {
-        content: '',
+        content: {rendered: ''},
         author: null,
         post: null
     }
@@ -19,10 +20,9 @@ export class PostDetail {
     }
 
     editCommentChanged(selecteComment) {
-        console.log(selecteComment);
-        debugger;
-        this.comment.content = selecteComment.content.rendered;
-        
+        selecteComment.content.rendered = selecteComment.content.rendered.replace(/<br \/>/g, '');
+        this.comment = selecteComment;
+        this.isEditMode = true;   
     }
 
 } 

@@ -22,6 +22,16 @@ export class WpService {
             .map(res => res.json());
     }
 
+    signup(paramsObj) {
+        let params = this.util.transformRequest(paramsObj);
+        console.log(params);
+        return this.http.post(this.wpApiURL + '/users/?' + params, JSON.stringify(paramsObj))
+            .map(
+                res => res.json()
+            );
+    }
+
+
     userAddComment(paramsObj) {
         let params = this.util.transformRequest(paramsObj);
         console.log('sending request');
@@ -32,6 +42,28 @@ export class WpService {
                     this.comments.push(newComment);
                     console.log(this.comments);
                     return newComment;
+                }
+            );
+    }
+
+    userUpdateComment(id, paramsObj) {
+        let params = this.util.transformRequest(paramsObj);
+        console.log('sending request');
+        return this.authHttp.put(this.wpApiURL + '/comments/'+ id + '?' + params, JSON.stringify({}))
+            .map(
+                res => {
+                    let updatedComment = res.json();
+                    //this.comments.push(updatedComment);
+                    for(let i=0; i<this.comments.length; i++) {
+                        if (this.comments[i].id === id) {
+                            this.comments[i] = updatedComment;
+                            console.log('old', this.comments[i]);
+                            break;
+                        }
+                    }
+
+                    console.log(this.comments);
+                    return updatedComment;
                 }
             );
     }
@@ -51,10 +83,11 @@ export class WpService {
             });
     }
 
-    deleteComment(commentId) {
-        return this.authHttp.delete(this.wpApiURL + '/comments/' + commentId)
+    deleteComment(comment) {
+        return this.authHttp.delete(this.wpApiURL + '/comments/' + comment.id)
             .map(res => {
                 console.log(res.json());
+                this.comments.splice(this.comments.indexOf(comment), 1)
                 return res.json();
             });
     }

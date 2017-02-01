@@ -19,7 +19,7 @@
     <ion-col right text-right *ngIf="canDeleteComment(comment.author)">
       <ion-note>
         <span (click)="editComment(comment)"><a>Edit</a></span> | 
-        <span (click)="deleteComment(comment.id)"><a>Delete</a></span>
+        <span (click)="deleteComment(comment)"><a>Delete</a></span>
       </ion-note>
     </ion-col>
   </ion-row>

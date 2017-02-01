@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { Http } from '@angular/http';
+import { AlertController, ToastController } from 'ionic-angular';
 import { SITE_URL, WpService } from '../../services/index';
 
 @Component({
@@ -15,7 +16,12 @@ export class CommentsListComponent {
     comments: any = [];
     authorId = null;
 
-    constructor(private http: Http, private wp: WpService) {
+    constructor(
+        private http: Http, 
+        private wp: WpService,
+        private alertCtrl: AlertController,
+        private toastCtrl: ToastController
+        ) {
     }
 
     ngOnInit(){
@@ -38,20 +44,54 @@ export class CommentsListComponent {
         return authorId === this.wp.getCurrentAuthorId();
     }
 
-    deleteComment(commentId) {
-        console.log(commentId);
-        this.wp.deleteComment(commentId).subscribe(
-            data => {
-                console.log(data);
-            },
-            error => {
-                console.log(error);
-            }
-        );
+    deleteComment(comment) {
+
+        let confirm = this.alertCtrl.create({
+            title: 'Delete Comment',
+            message: 'Are you sure to delete this comment?',
+            buttons: [
+                {
+                text: 'Yes',
+                handler: () => {
+                    let toast = this.toastCtrl.create({
+                        message: 'processing'
+                        });
+                    toast.present();
+                    this.wp.deleteComment(comment).subscribe(
+                        data => {
+                            console.log(data);
+                            toast.dismiss();
+                            this.showToast('Comment is successfully deleted.');
+                        },
+                        error => {
+                            console.log(error);
+                            toast.dismiss();
+                            this.showToast(error);
+                        }
+                    );
+                }
+                },
+                {
+                text: 'Cancel',
+                handler: () => {
+                    console.log('delete comment action cancelled');
+                }
+                }
+            ]
+            });
+        confirm.present();
     }
 
     editComment(comment) {
         this.editCommentChanged.emit(comment);
+    }
+
+    showToast(message) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000
+            });
+        toast.present();
     }
 
 
